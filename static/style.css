@@ -1,0 +1,114 @@
+/* Custom modern variables declaration layers */
+:root {
+  --sidebar-width: 300px;
+  --sidebar-bg: #111827;      /* Match premium dark aesthetic */
+  --sidebar-hover: #1f2937;
+  --sidebar-active: #374151;
+}
+
+/* Base layouts normalization styles tracking overrides */
+body {
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* ── CHATGPT-STYLE SIDEBAR INTERFACE ── */
+.sidebar {
+  width: var(--sidebar-width);
+  background-color: var(--sidebar-bg);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 40;
+}
+
+.history-item {
+  padding: 12px 14px;
+  margin: 4px 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  background: transparent;
+  transition: all 0.15s ease-in-out;
+  border: 1px solid transparent;
+}
+
+.history-item:hover {
+  background-color: var(--sidebar-hover);
+}
+
+.history-item.active {
+  background-color: var(--sidebar-active);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.history-title-text {
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: #e5e7eb;
+  line-height: 1.25rem;
+}
+
+.star-toggle-icon {
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-size: 0.95rem;
+}
+
+.star-toggle-icon:hover, 
+.star-toggle-icon.fas {
+  color: #fbbf24 !important; /* Warm gold profile highlights */
+}
+
+/* ── TAB BAR LINK COMPONENT INTERFACES ── */
+.tab-link {
+  color: #6b7280;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.tab-link:hover {
+  color: #374151;
+}
+
+.tab-link.active {
+  color: #4f46e5;
+  border-bottom-color: #4f46e5;
+}
+
+/* ── INTERACTIVE OPTIONS LABEL SELECTIONS ROWS ── */
+.custom-clickable-row {
+  transition: all 0.15s ease-in-out;
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+}
+
+.custom-clickable-row:hover {
+  background-color: #f9fafb;
+  border-color: #cbcdd2;
+}
+
+.custom-clickable-row:has(input:checked) {
+  background-color: #f5f3ff;
+  border-color: #c084fc;
+  box-shadow: 0 0 0 1px #c084fc;
+}
+
+/* ── COLOR ATTRIBUTES ENHANCEMENT FOR FEEDBACK STATES ── */
+.bg-success-light { background-color: #f0fdf4; }
+.text-success-dark { color: #166534; }
+.bg-danger-light { background-color: #fef2f2; }
+.text-danger-dark { color: #991b1b; }
+
+/* ── PIPELINE STEP NODES PROGRESS STYLINGS ── */
+.step-node.active {
+  color: #4f46e5;
+  font-weight: 800;
+}
+
+/* Simple animation tracking keyframes entries */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fadeIn {
+  animation: fadeIn 0.25s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
