@@ -9,3 +9,5 @@ sentencepiece
 faster-whisper
 ctranslate2
 groq
+yt-dlp>=2026.05.20
+pyxattr

@@ -7,31 +7,39 @@ logger = logging.getLogger(__name__)
 UPLOAD_FOLDER = "uploads"
 COOKIES_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "cookies.txt")
 
-def download_video(url: str, job_id: str) -> str:
+def download_video(url: str, job_id: str):
     os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+    
+    # Template path for yt-dlp
     output_path = os.path.join(UPLOAD_FOLDER, f"raw_{job_id}.%(ext)s")
 
+    # Using -x for --extract-audio and --audio-format inside the command
+    # Removed --no-check-certificates (it's rarely needed and insecure)
     cmd = [
         "yt-dlp",
         "--cookies", COOKIES_PATH,
-        "--extractor-args", "youtube:player_client=ios",  # ← supports cookies + audio
-        "-f", "bestaudio/best",                          # ← fallback if bestaudio fails
-        "-o", output_path,
+        "-f", "bestaudio/best",
+        "-x", 
+        "--audio-format", "mp3",
+        "--audio-quality", "0",
         "--no-playlist",
-        "--no-check-certificates",
+        "-o", output_path,
         url,
     ]
 
-    logger.info("Downloading video: %s", url)
-    result = subprocess.run(cmd, capture_output=True)
+    logger.info("Running: %s", " ".join(cmd))
 
-    if result.returncode != 0:
-        raise RuntimeError(f"yt-dlp failed:\n{result.stderr.decode(errors='replace')}")
+    try:
+        # Use subprocess.run with check=True to handle errors automatically
+        result = subprocess.run(cmd, capture_output=True, text=True, check=True)
+        
+        # Look for the generated file
+        for file in os.listdir(UPLOAD_FOLDER):
+            if file.startswith(f"raw_{job_id}") and file.endswith(".mp3"):
+                return os.path.join(UPLOAD_FOLDER, file)
+                
+    except subprocess.CalledProcessError as e:
+        logger.error("yt-dlp failed: %s", e.stderr)
+        raise RuntimeError(f"Download failed: {e.stderr}")
 
-    for fname in os.listdir(UPLOAD_FOLDER):
-        if fname.startswith(f"raw_{job_id}"):
-            full_path = os.path.join(UPLOAD_FOLDER, fname)
-            logger.info("Downloaded to: %s", full_path)
-            return full_path
-
-    raise FileNotFoundError(f"yt-dlp finished but no output file found for job {job_id}")
+    raise FileNotFoundError("Downloaded file not found.")
