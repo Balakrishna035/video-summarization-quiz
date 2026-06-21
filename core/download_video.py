@@ -14,7 +14,7 @@ def download_video(url: str, job_id: str) -> str:
     cmd = [
         "yt-dlp",
         "--cookies", COOKIES_PATH,
-        "--extractor-args", "youtube:player_client=web",  # ← supports cookies + audio
+        "--extractor-args", "youtube:player_client=ios",  # ← supports cookies + audio
         "-f", "bestaudio/best",                          # ← fallback if bestaudio fails
         "-o", output_path,
         "--no-playlist",
