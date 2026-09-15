@@ -1,10 +1,12 @@
 FROM python:3.11-slim
 
-# Install FFmpeg and Node.js (required by yt-dlp for YouTube JS challenges)
-RUN apt-get update && apt-get install -y ffmpeg curl && \
-    curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
-    apt-get install -y nodejs && \
+# Install FFmpeg and Deno (required by yt-dlp for YouTube JS challenges)
+RUN apt-get update && apt-get install -y ffmpeg curl unzip && \
+    curl -fsSL https://deno.land/install.sh | sh && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
+
+ENV DENO_INSTALL="/root/.deno"
+ENV PATH="$DENO_INSTALL/bin:$PATH"
 
 WORKDIR /app
 
