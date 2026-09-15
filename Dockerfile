@@ -8,9 +8,6 @@ RUN apt-get update && apt-get install -y ffmpeg curl unzip && \
 ENV DENO_INSTALL="/root/.deno"
 ENV PATH="$DENO_INSTALL/bin:$PATH"
 
-# Verify Deno is actually installed and on PATH
-RUN deno --version
-
 WORKDIR /app
 
 COPY requirements.txt .
@@ -22,4 +19,4 @@ COPY . .
 
 EXPOSE 10000
 
-CMD ["gunicorn", "--bind", "0.0.0.0:10000", "app:app"]
+CMD ["gunicorn", "--bind", "0.0.0.0:10000", "--timeout", "300", "app:app"]
