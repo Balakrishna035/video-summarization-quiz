@@ -5,11 +5,16 @@ services:
     plan: free
     buildCommand: |
       apt-get update
-      apt-get install -y ffmpeg
+      apt-get install -y ffmpeg curl unzip
+      curl -fsSL https://deno.land/install.sh | sh
+      export DENO_INSTALL="/opt/render/.deno"
+      export PATH="$DENO_INSTALL/bin:$PATH"
       pip install -r requirements.txt
-    startCommand: gunicorn app:app
+    startCommand: gunicorn app:app --timeout 300
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.11
       - key: GROQ_API_KEY
         sync: false
+      - key: PATH
+        value: /opt/render/.deno/bin:$PATH
